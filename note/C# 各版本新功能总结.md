@@ -146,9 +146,57 @@ a = new[] {1,2,3};
 
 #### 3.2 命名参数/可选参数
 
-*命名实参*，你可以为特定形参指定实参，方法是将实参与该形参的名称关联，而不是与形参在形参列表中的位置关联。可选参数，你可以为某些形参省略实参。 这两种技术都可与方法、索引器、构造函数和委托一起使用。
+可选参数
 
+为什么要使用可选参数？因为在方法参数过多，调用显得麻烦，在方法调用时不必传递所有参数，可选参数，又称为“默认参数”
+
+```csharp
+public void GetInfo(int startIndex = 1,int pageCount = 10) {}
 ```
 
+命名参数
+
+为什么要使用命名参数？因为使用命名参数可忽略参数的顺序，在调用时候非常方便，尤其是参数多的情况，调用时用参数名称和参数值同时出现的方法，同时提高代码的可读性.
+
+```csharp
+static void Main()
+{
+    QueryInfo(keyWord:"key",id:"1");
+}
+static void QueryInfo(string id,string keyWord) {}
+```
+
+#### 3.3 泛型中的协变和逆变
+
+#### 3.4 类型等效、内置互操作类型
+
+参考：https://docs.microsoft.com/zh-cn/dotnet/framework/interop/type-equivalence-and-embedded-interop-types
+
+### 4. C#  5.0 - 2012
+
+#### 4.1 async / await
+
+```csharp
+private async Task AsyncMethod()
+{
+    var Result = await AsyncMethodB();
+}
+```
+
+#### 4.2 获取调用方信息
+
+为了调测方便，除了事件信息外，我们往往还需要知道发生该事件的代码位置以及调用栈信息。针对这个问题，在.Net 4.5中引入了三个Attribute：CallerMemberName、CallerFilePath和CallerLineNumber。在编译器的配合下，分别可以获取到调用函数（准确讲应该是成员）名称，调用文件及调用行号。
+
+```csharp
+  public void TraceMessage(string message,
+            [CallerMemberName] string memberName = "",
+            [CallerFilePath] string sourceFilePath = "",
+            [CallerLineNumber] int sourceLineNumber = 0)
+    {
+        Trace.WriteLine("message: " + message);
+        Trace.WriteLine("member name: " + memberName);
+        Trace.WriteLine("source file path: " + sourceFilePath);
+        Trace.WriteLine("source line number: " + sourceLineNumber);
+    }
 ```
 
