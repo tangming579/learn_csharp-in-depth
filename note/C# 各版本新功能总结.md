@@ -250,3 +250,38 @@ public ICollection<double> Grades {get;} = new List<double>();
 public override string ToString() => $"{LastName}, {FirstName}";
 ```
 
+#### 5.5 Null 传播器
+
+```
+var first = person?.firstName;
+```
+
+#### 5.6 字符串内插
+
+```
+var name = "world";
+Console.WriteLine($"hello {name}");
+```
+
+#### 5.7 nameof 表达式
+
+有时字符串值和某个变量名称一致，尤其是在做参数验证时。这里 `nameof`就能在编译期，自动从变量名生成一个字符串。
+
+```
+if(IsNullOrWhiteSpace(lastName))
+	throw new ArgumentException(message:"Cannot be blank", paramName: nameof(lastName));
+```
+
+### 6. C# 7.0 - 2017
+
+#### 6.1 out 变量
+
+```
+if(int.TryParse(input,out int result))    
+	Console.WriteLine(result);
+else    
+	Console.WriteLine("Could not parse input");
+```
+
+#### 6.2 元组和解构函数
+
