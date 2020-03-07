@@ -188,15 +188,65 @@ private async Task AsyncMethod()
 为了调测方便，除了事件信息外，我们往往还需要知道发生该事件的代码位置以及调用栈信息。针对这个问题，在.Net 4.5中引入了三个Attribute：CallerMemberName、CallerFilePath和CallerLineNumber。在编译器的配合下，分别可以获取到调用函数（准确讲应该是成员）名称，调用文件及调用行号。
 
 ```csharp
-  public void TraceMessage(string message,
-            [CallerMemberName] string memberName = "",
-            [CallerFilePath] string sourceFilePath = "",
-            [CallerLineNumber] int sourceLineNumber = 0)
-    {
-        Trace.WriteLine("message: " + message);
-        Trace.WriteLine("member name: " + memberName);
-        Trace.WriteLine("source file path: " + sourceFilePath);
-        Trace.WriteLine("source line number: " + sourceLineNumber);
-    }
+static void Main(string[] args)
+{
+    TraceMessage("获得调用方信息。");
+    Console.Read();
+}
+public static void TraceMessage(string message,
+[CallerMemberName]string memberName = "",
+[CallerFilePath]string sourceFilePath = "",
+[CallerLineNumber]int sourceLineNumber = 0)
+{
+    Console.WriteLine("message: " + message);
+    Console.WriteLine("member name: " + memberName);
+    Console.WriteLine("source file path: " + sourceFilePath);
+    Console.WriteLine("source line number: " + sourceLineNumber);
+}
+
+// Sample Output:
+//message: 获得调用方信息。
+//member name: Main
+//source file path: C:\Users\tangm\source\repos\ConsoleApp2\ConsoleApp2\Program.cs
+//source line number: 15
+```
+
+### 5. C# 6.0 - 2015
+
+#### 5.1 静态导入
+
+```csharp
+using static System.Math;
+using static System.Console;
+
+WriteLine(Sin(3.14));
+```
+
+#### 5.2 异常筛选器
+
+在 try catch 时，可以按指定的条件进行 catch ，其他条件不 catch
+
+```csharp
+try
+{
+    // Some exception
+}
+catch (Exception e) if (e.InnerException != null)
+{
+    // handle the exception
+}
+finally {}
+```
+
+#### 5.3 自动初始化表达式
+
+```
+public ICollection<double> Grades {get;} = new List<double>();
+```
+
+#### 5.4 Expression-bodied 函数成员
+
+```
+public override string ToString() => $"{LastName}, {FirstName}";
 ```
 
