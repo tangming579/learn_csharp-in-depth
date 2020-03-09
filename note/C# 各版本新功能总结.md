@@ -285,3 +285,45 @@ else
 
 #### 6.2 元组和解构函数
 
+#### 6.3 模式匹配
+
+在匹配一个类型时，自动转换为这个类型的变量，如果转换失败，这个变量就赋值为默认值（null 或 0）
+
+极简版：
+
+```csharp
+if(input is int count)
+	sum += count;
+```
+
+switch/case 版：
+
+```csharp
+public static int SumPositiveNumbers(IEnumerable<object> sequence)
+{
+    int sum = 0;
+    foreach(var i in sequence)
+    {
+        switch(i)
+        {
+            case 0:
+                break;
+            case IEnumerable<int> childSequence:
+                {
+                 
+                    break;
+                }
+            case int n when n > 0:
+                {
+                    sum += n;
+                    break;
+                }
+            case null:
+                throw new NullReferenceException("Null found in sequence");
+            default:
+                throw new InvalidOperationException("Unrecognized type");
+        }
+    }
+}
+```
+
