@@ -289,6 +289,8 @@ else
 
 在匹配一个类型时，自动转换为这个类型的变量，如果转换失败，这个变量就赋值为默认值（null 或 0）
 
+参考：https://docs.microsoft.com/zh-cn/dotnet/csharp/pattern-matching
+
 极简版：
 
 ```csharp
@@ -299,31 +301,49 @@ if(input is int count)
 switch/case 版：
 
 ```csharp
-public static int SumPositiveNumbers(IEnumerable<object> sequence)
+public static double ComputeArea_Version5(object shape)
 {
-    int sum = 0;
-    foreach(var i in sequence)
+    switch (shape)
     {
-        switch(i)
-        {
-            case 0:
-                break;
-            case IEnumerable<int> childSequence:
-                {
-                 
-                    break;
-                }
-            case int n when n > 0:
-                {
-                    sum += n;
-                    break;
-                }
-            case null:
-                throw new NullReferenceException("Null found in sequence");
-            default:
-                throw new InvalidOperationException("Unrecognized type");
-        }
+        case Square s when s.Side == 0:
+        case Circle c when c.Radius == 0:
+        case Triangle t when t.Base == 0 || t.Height == 0:
+        case Rectangle r when r.Length == 0 || r.Height == 0:
+            return 0;
+
+        case Square s:
+            return s.Side * s.Side;
+        case Circle c:
+            return c.Radius * c.Radius * Math.PI;
+        case Triangle t:
+            return t.Base * t.Height / 2;
+        case Rectangle r:
+            return r.Length * r.Height;
+        case null:
+            throw new ArgumentNullException(
+                paramName: nameof(shape), message: "Shape must not be null");
+        default:
+            throw new ArgumentException(
+                message: "shape is not a recognized shape",
+                paramName: nameof(shape));
     }
+}
+```
+
+#### 6.4 本地函数
+
+方法可以在方法中声明。
+
+```
+ static void IntroWithLambdaExpression()
+{
+	int add(int x,int y)
+	{
+    	return x+y;
+	}
+	int add(int x,int y)=>x+y;
+	int result = add(37,5);
+	Console.WriteLine(result);
 }
 ```
 
